@@ -33,7 +33,7 @@ from
 ```
 
 Before data pre-processing, there are 764,325 raw observations, with 191 incident types in the dataset. After the data cleaning process in SSMS, there're 750,725 valid records, with 8 mian incident types ready to be used. After this step, the dataset looks like that:
-![jpg](/public/project-images/911_calls_eda/Seattle_Hot_Spots.jpg)
+![jpg](Seattle_Hot_Spots.jpg)
 
 We may find that the datetime in this raw dataset is not unified. For example, datetime before transformation: “2011-11-06T24:46:00+0000”, “01/01/2011 01:05:00 PM +0000”. Therefore, I used Python to convert the DateTime into a standard format in the dataset. After transformation, the Datetime column is formatted into Year (2011-2018), Month (1-12), Date (01-31), Time (00-23).
 
@@ -82,7 +82,7 @@ df = df[ (df['Longitude']>lon_min) & (df['Longitude']<lon_max) & (df['Latitude']
 df.head()
 ```
 The data now looks like that:
-![jpg](/public/project-images/911_calls_eda/Seattle_Hot_Spots_2.jpg)
+![jpg](Seattle_Hot_Spots_2.jpg)
 
 Let's try to convert the Datetime column with a function.
 ```python
@@ -115,7 +115,7 @@ Inc_Type= pd.read_csv('Incident_Type.csv',"rb",delimiter='\t')
 Main_Type = Inc_Type.head(8)
 Main_Type.plot.bar(x='Type', y='Incident_Number')
 ```
-![png](/public/project-images/911_calls_eda/Seattle_Hot_Spots_3.png)
+![png](Seattle_Hot_Spots_3.png)
 
 Next, let's use aggregation method to figure out the emergencies trend by time.
 
@@ -165,7 +165,7 @@ plt.xlabel('Year')
 plt.ylabel('Number of responses')
 plt.show()
 ```
-![png](/public/project-images/911_calls_eda/Seattle_Hot_Spots_4.png)
+![png](Seattle_Hot_Spots_4.png)
 
 According to these graphs, we may found some potential patterns as follows.
 1. Medic Response vs. Month: medical accidents reach the peak in Summer.
@@ -190,34 +190,34 @@ def plot_incidents(incidents):
 data=df[ (df['Year']==2017)& (df['Month']==2) & (df['Type']=='Medic Response')]
 plot_incidents(data)
 ```
-![png](/public/project-images/911_calls_eda/Seattle_Hot_Spots_5.png)
+![png](Seattle_Hot_Spots_5.png)
 ```python
 data=df[ (df['Year']==2017)& (df['Month']==8) & (df['Type']=='Medic Response')]
 plot_incidents(data)
 ```
-![png](/public/project-images/911_calls_eda/Seattle_Hot_Spots_6.png)
+![png](Seattle_Hot_Spots_6.png)
 Here we can find that medical accidents reach the peak in Summer, potentially because of summer sport activities injuries.
 ```python
 data=df[ (df['Year']==2017)& (df['Time']==2) & ((df['Type'] == 'Assault w/Weap 7 per Rule') | (df['Type'] == 'Assault w/Weapons 14') | (df['Type'] == 'Assault w/Weapons, Aid') | (df['Type'] == 'Assault w/Weapons- Aid')])
 plot_incidents(data)
 ```
-![png](/public/project-images/911_calls_eda/Seattle_Hot_Spots_7.png)
+![png](Seattle_Hot_Spots_7.png)
 ```python
 data=df[ (df['Year']==2017)& (df['Time']==15) & ((df['Type'] == 'Assault w/Weap 7 per Rule') | (df['Type'] == 'Assault w/Weapons 14') | (df['Type'] == 'Assault w/Weapons, Aid') | (df['Type'] == 'Assault w/Weapons- Aid')])
 plot_incidents(data)
 ```
-![png](/public/project-images/911_calls_eda/Seattle_Hot_Spots_8.png)
+![png](Seattle_Hot_Spots_8.png)
 Assaults are more likely to happen at Midnight 2am - potentially because people who drink at night get dizzy and easy to be attacked.
 ```python
 data=df[ (df['Year']==2011)& ((df['Month']==6) |(df['Month']==7) |(df['Month']==8 ) & (df['Type']=='Trans to AMR')]
 plot_incidents(data)
 ```
-![png](/public/project-images/911_calls_eda/Seattle_Hot_Spots_9.png)
+![png](Seattle_Hot_Spots_9.png)
 ```python
 data=df[ (df['Year']==2017)& ((df['Month']==6) |(df['Month']==7) |(df['Month']==8 ) & (df['Type']=='Trans to AMR')]
 plot_incidents(data)
 ```
-![png](/public/project-images/911_calls_eda/Seattle_Hot_Spots_10.png)
+![png](Seattle_Hot_Spots_10.png)
 We may find that a huge increase in the number of ambulance calls from 2011 to 2017, potentially because average wage is higher and people can afford to call.
 
 ## Find the Centroids and Hot Spots for diffrent types of incidents
@@ -227,7 +227,7 @@ I first plot all assault accidents on the map and then find the best K value by 
 data=df[((df['Type'] == 'Assault w/Weap 7 per Rule') | (df['Type'] == 'Assault w/Weapons 14') | (df['Type'] == 'Assault w/Weapons, Aid') | (df['Type'] == 'Assault w/Weapons- Aid')])
 plot_incidents(data)
 ```
-![png](/public/project-images/911_calls_eda/Seattle_Hot_Spots_11.png)
+![png](Seattle_Hot_Spots_11.png)
 ```python
 data.shape
 ```
@@ -280,8 +280,8 @@ pl.title('Elbow Curve')
 
 pl.show()
 ```
-![png](/public/project-images/911_calls_eda/Seattle_Hot_Spots_12.png)
-![png](/public/project-images/911_calls_eda/Seattle_Hot_Spots_13.png)
+![png](Seattle_Hot_Spots_12.png)
+![png](Seattle_Hot_Spots_13.png)
 ```python
 score
 ```
@@ -316,7 +316,7 @@ clusters = pd.DataFrame(data = cluster,columns = ['Longitude','Latitude'])
 result = pd.concat([topvenues_df, clusters], axis=1, join='inner',join_axes=[topvenues_df.index])
 result
  ```
-![png](/public/project-images/911_calls_eda/Seattle_Hot_Spots_15.png)
+![png](Seattle_Hot_Spots_15.png)
 Then I clustered the data by location to form pseudo neighborhoods that are roughly defined the geography of where emergencies tend to happen.
 ```python
 def plot_center(cleaned_data,points):
@@ -334,7 +334,7 @@ cleaned_data = data_assault.drop(["Report_Location"],axis = 1)
 cleaned_data = cleaned_data.drop(["Incident_Number"],axis = 1)
 plot_center(cleaned_data,points)
 ```
-![png](/public/project-images/911_calls_eda/Seattle_Hot_Spots_14.png)
+![png](Seattle_Hot_Spots_14.png)
 These colored clusters tend to pick out neighborhoods, and this works quite well in breaking up neighborhoods. The red circles represent the centroids of these clusters.
 Next, I used Voronoi diagram to abstract the map.
 ```python
@@ -345,7 +345,7 @@ import matplotlib.pyplot as plt
 voronoi_plot_2d(vor)
 plt.show()
 ```
-![png](/public/project-images/911_calls_eda/Seattle_Hot_Spots_16.png)
+![png](Seattle_Hot_Spots_16.png)
 Recommendation: We can set up emergency help centers near these centroids so that when emergencies came out, Seattle Police can get to the report location more quickly (Voronoi Diagram).
 Next, let's use DBSCAN method on the same assault data.
 ***DBSCAN Clustering*** -  Identify the Hot Spots for Aid Responses 
@@ -385,17 +385,17 @@ cleaned_data = data_aid.drop(["Report_Location"],axis = 1)
 cleaned_data = cleaned_data.drop(["Incident_Number"],axis = 1)
 plot_center(cleaned_data,points)
 ```
-![png](/public/project-images/911_calls_eda/Seattle_Hot_Spots_17.png)
+![png](Seattle_Hot_Spots_17.png)
 Recommendation: Seattle Police should maintain more frequent patrol in colored areas.
 ## Method comarison
 Here I created an overlaped map to compare these two methods.
-![png](/public/project-images/911_calls_eda/Seattle_Hot_Spots_18.png)
+![png](Seattle_Hot_Spots_18.png)
 Yellow plot: noise of DBSCAN
 Red circle: K-Means (k = 9)
 Blue area: DBSCAN clustering (cluster number = 8)
 (Threshold: at least 15 points in a cluster)
 
-![png](/public/project-images/911_calls_eda/Seattle_Hot_Spots_19.png)
+![png](Seattle_Hot_Spots_19.png)
 yellow plot: noise of DBSCAN
 Red circle: K-Means (k = 10)
 Blue area: DBSCAN clustering (cluster number = 9)
